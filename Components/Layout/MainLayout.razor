@@ -1,17 +1,49 @@
 ﻿@inherits LayoutComponentBase
+<RadzenComponents />
+<HeadContent>
+    <RadzenTheme Theme="material" />
+</HeadContent>
 
-<div class="page">
+@*
     <div class="sidebar">
         <NavMenu />
     </div>
+    *@
+<div class="page">
+    <RadzenLayout style="position: relative;grid-template-areas: 'rz-sidebar rz-header' 'rz-sidebar rz-body'">
+        <RadzenHeader>
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
+                <RadzenSidebarToggle Click="@(() => sidebarExpanded = !sidebarExpanded)" />
+                <RadzenLabel Text="Menu" />
+            </RadzenStack>
+        </RadzenHeader>
+        <RadzenSidebar Responsive="false" @bind-Expanded="@sidebarExpanded" style="position: absolute; z-index: 3">
+            <RadzenStack AlignItems="AlignItems.End" Class="rz-p-2">
+                <RadzenButton Icon="west" Text="Close" Variant="Variant.Text" Click="@(() => sidebarExpanded = false)" />
+            </RadzenStack>
+            <RadzenPanelMenu Multiple="false">
+                <RadzenPanelMenuItem Path="" Text="Home" Icon="home" />
+                @*
+                <RadzenButton Click="(e) => isModalOpen = true" Variant="Variant.Text" Shade="Shade.Darker" class="rz-ripple">
+                    <RadzenImage Path=".\images\ATLLogo.png" AlternateText="ATL" Style="width: 100%; height: auto;" />
+                </RadzenButton>*@
+            </RadzenPanelMenu>
+        </RadzenSidebar>
+        <RadzenBody>
+            <main>
+                <article class="content px-4">
+                    @Body
+                </article>
+            </main>
+        </RadzenBody>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+        @if (sidebarExpanded)
+        {
+            <div @onclick="@(() => sidebarExpanded = false)" class="rz-dialog-mask" style="position: absolute; z-index: 2"></div>
+        }
+    </RadzenLayout>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
 </div>
+@code {
+    bool sidebarExpanded = false;
+}

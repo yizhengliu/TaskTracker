@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Radzen;
+using TaskTracker.Services;
 
 namespace TaskTracker
 {
@@ -13,11 +15,11 @@ namespace TaskTracker
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
-
+            builder.Services.AddSingleton<LocalDbService>();
             builder.Services.AddMauiBlazorWebView();
-
+            builder.Services.AddRadzenComponents();
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
 
